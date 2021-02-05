@@ -337,10 +337,18 @@ class RadialStim(GratingStim):
         # which vertices are visible?
         # first edge of wedge:
         visW = self.visibleWedge
-        self._visible = (self._angles >= visW[0] * pi / 180)
-        # second edge of wedge:
-        edge2 = (self._angles + self._triangleWidth) * (180/pi) > visW[1]
-        self._visible[edge2] = False
+        # import clarte as cl
+        # cl.keyboard()
+        if visW[1]>visW[0]:
+            self._visible = (self._angles >= visW[0] * pi / 180)
+            # second edge of wedge:
+            edge2 = (self._angles + self._triangleWidth) * (180/pi) > visW[1]
+            self._visible[edge2] = False
+        else:
+            lt0 = (self._angles >= visW[0] * pi / 180)
+            gt0 = (self._angles < visW[1] * pi / 180)
+            self._visible = numpy.logical_or(lt0,gt0)
+
         self._nVisible = numpy.sum(self._visible) * 3
 
         self._updateTextureCoords()
